@@ -101,10 +101,10 @@ class SenecaBot(BaseRobotQuadruped):
     @staticmethod
     def _get_action_specification(spec: MjSpec) -> List[str]:
         return [
-            "fr_hip", "fr_knee", "fr_ankle",
-            "fl_hip", "fl_knee", "fl_ankle",
-            "br_hip", "br_knee", "br_ankle",
-            "bl_hip", "bl_knee", "bl_ankle",
+            "fr_hip_act", "fr_knee_act", "fr_ankle_act",
+            "fl_hip_act", "fl_knee_act", "fl_ankle_act",
+            "br_hip_act", "br_knee_act", "br_ankle_act",
+            "bl_hip_act", "bl_knee_act", "bl_ankle_act",
         ]
 
     @info_property
