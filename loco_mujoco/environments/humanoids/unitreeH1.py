@@ -183,7 +183,9 @@ class UnitreeH1(BaseRobotHumanoid):
         self._disable_back_joint = disable_back_joint
 
         if spec is None:
+            
             spec = self.get_default_xml_file_path()
+            print(spec)
 
         # load the model specification
         spec = mujoco.MjSpec.from_file(spec) if not isinstance(spec, MjSpec) else spec

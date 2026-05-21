@@ -8,6 +8,7 @@ from loco_mujoco.core import ObservationType
 from loco_mujoco.environments.quadrupeds.base_robot_quadruped import BaseRobotQuadruped
 from loco_mujoco.core.utils import info_property
 
+
 class SenecaBot(BaseRobotQuadruped):
 
     mjx_enabled = True
@@ -37,7 +38,7 @@ class SenecaBot(BaseRobotQuadruped):
         if actuation_spec is None:
             actuation_spec = self._get_action_specification(spec)
 
-        if "init_state_handler" not in kwargs.keys():
+        if "init_state_type" not in kwargs.keys():
             kwargs["init_state_type"] = "DefaultInitialStateHandler"
             kwargs["init_state_params"] = dict(
                 qpos_init=self.init_qpos,
@@ -59,52 +60,54 @@ class SenecaBot(BaseRobotQuadruped):
 
     @staticmethod
     def _get_observation_specification(spec: MjSpec) -> List[ObservationType]:
+        # ACTUALIZACIÓN: xml_name ahora apunta a los joints con sufijo "_joint"
         observation_spec = [
             ObservationType.FreeJointPosNoXY("q_root", xml_name="root"),
 
-            ObservationType.JointPos("q_fr_hip",   xml_name="fr_hip"),
-            ObservationType.JointPos("q_fr_knee",  xml_name="fr_knee"),
-            ObservationType.JointPos("q_fr_ankle", xml_name="fr_ankle"),
+            ObservationType.JointPos("q_fr_hip",   xml_name="fr_hip_joint"),
+            ObservationType.JointPos("q_fr_knee",  xml_name="fr_knee_joint"),
+            ObservationType.JointPos("q_fr_ankle", xml_name="fr_ankle_joint"),
 
-            ObservationType.JointPos("q_fl_hip",   xml_name="fl_hip"),
-            ObservationType.JointPos("q_fl_knee",  xml_name="fl_knee"),
-            ObservationType.JointPos("q_fl_ankle", xml_name="fl_ankle"),
+            ObservationType.JointPos("q_fl_hip",   xml_name="fl_hip_joint"),
+            ObservationType.JointPos("q_fl_knee",  xml_name="fl_knee_joint"),
+            ObservationType.JointPos("q_fl_ankle", xml_name="fl_ankle_joint"),
 
-            ObservationType.JointPos("q_br_hip",   xml_name="br_hip"),
-            ObservationType.JointPos("q_br_knee",  xml_name="br_knee"),
-            ObservationType.JointPos("q_br_ankle", xml_name="br_ankle"),
+            ObservationType.JointPos("q_br_hip",   xml_name="br_hip_joint"),
+            ObservationType.JointPos("q_br_knee",  xml_name="br_knee_joint"),
+            ObservationType.JointPos("q_br_ankle", xml_name="br_ankle_joint"),
 
-            ObservationType.JointPos("q_bl_hip",   xml_name="bl_hip"),
-            ObservationType.JointPos("q_bl_knee",  xml_name="bl_knee"),
-            ObservationType.JointPos("q_bl_ankle", xml_name="bl_ankle"),
+            ObservationType.JointPos("q_bl_hip",   xml_name="bl_hip_joint"),
+            ObservationType.JointPos("q_bl_knee",  xml_name="bl_knee_joint"),
+            ObservationType.JointPos("q_bl_ankle", xml_name="bl_ankle_joint"),
 
             ObservationType.FreeJointVel("dq_root", xml_name="root"),
 
-            ObservationType.JointVel("dq_fr_hip",   xml_name="fr_hip"),
-            ObservationType.JointVel("dq_fr_knee",  xml_name="fr_knee"),
-            ObservationType.JointVel("dq_fr_ankle", xml_name="fr_ankle"),
+            ObservationType.JointVel("dq_fr_hip",   xml_name="fr_hip_joint"),
+            ObservationType.JointVel("dq_fr_knee",  xml_name="fr_knee_joint"),
+            ObservationType.JointVel("dq_fr_ankle", xml_name="fr_ankle_joint"),
 
-            ObservationType.JointVel("dq_fl_hip",   xml_name="fl_hip"),
-            ObservationType.JointVel("dq_fl_knee",  xml_name="fl_knee"),
-            ObservationType.JointVel("dq_fl_ankle", xml_name="fl_ankle"),
+            ObservationType.JointVel("dq_fl_hip",   xml_name="fl_hip_joint"),
+            ObservationType.JointVel("dq_fl_knee",  xml_name="fl_knee_joint"),
+            ObservationType.JointVel("dq_fl_ankle", xml_name="fl_ankle_joint"),
 
-            ObservationType.JointVel("dq_br_hip",   xml_name="br_hip"),
-            ObservationType.JointVel("dq_br_knee",  xml_name="br_knee"),
-            ObservationType.JointVel("dq_br_ankle", xml_name="br_ankle"),
+            ObservationType.JointVel("dq_br_hip",   xml_name="br_hip_joint"),
+            ObservationType.JointVel("dq_br_knee",  xml_name="br_knee_joint"),
+            ObservationType.JointVel("dq_br_ankle", xml_name="br_ankle_joint"),
 
-            ObservationType.JointVel("dq_bl_hip",   xml_name="bl_hip"),
-            ObservationType.JointVel("dq_bl_knee",  xml_name="bl_knee"),
-            ObservationType.JointVel("dq_bl_ankle", xml_name="bl_ankle"),
+            ObservationType.JointVel("dq_bl_hip",   xml_name="bl_hip_joint"),
+            ObservationType.JointVel("dq_bl_knee",  xml_name="bl_knee_joint"),
+            ObservationType.JointVel("dq_bl_ankle", xml_name="bl_ankle_joint"),
         ]
         return observation_spec
 
     @staticmethod
     def _get_action_specification(spec: MjSpec) -> List[str]:
+        # ACTUALIZACIÓN: Sin sufijos "_act", empareja exactamente con los motores del XML
         return [
-            "fr_hip_act", "fr_knee_act", "fr_ankle_act",
-            "fl_hip_act", "fl_knee_act", "fl_ankle_act",
-            "br_hip_act", "br_knee_act", "br_ankle_act",
-            "bl_hip_act", "bl_knee_act", "bl_ankle_act",
+            "fr_hip", "fr_knee", "fr_ankle",
+            "fl_hip", "fl_knee", "fl_ankle",
+            "br_hip", "br_knee", "br_ankle",
+            "bl_hip", "bl_knee", "bl_ankle",
         ]
 
     @info_property
@@ -132,6 +135,7 @@ class SenecaBot(BaseRobotQuadruped):
 
     @info_property
     def foot_geom_names(self) -> List[str]:
+        # Estos se mantienen igual, apuntan al 'name' del <geom> de los pies
         return ["fr_foot", "fl_foot", "br_foot", "bl_foot"]
 
     @info_property
@@ -162,14 +166,15 @@ class SenecaBot(BaseRobotQuadruped):
     
     @info_property
     def sites_for_mimic(self) -> list[str]:
+        # Estos coinciden perfectamente con los nombres de los <site> en el XML
         return [
-        "fr_foot_mimic",
-        "fl_foot_mimic",
-        "br_foot_mimic",
-        "bl_foot_mimic",
-        "base_mimic",
-        "fr_shank_mimic",
-        "fl_shank_mimic",
-        "br_shank_mimic",
-        "bl_shank_mimic"
+            "fr_foot_mimic",
+            "fl_foot_mimic",
+            "br_foot_mimic",
+            "bl_foot_mimic",
+            "base_mimic",
+            "fr_shank_mimic",
+            "fl_shank_mimic",
+            "br_shank_mimic",
+            "bl_shank_mimic"
         ]
