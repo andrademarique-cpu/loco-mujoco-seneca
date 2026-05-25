@@ -130,8 +130,8 @@ class SenecaBot(BaseRobotQuadruped):
     def root_height_healthy_range(self) -> Tuple[float, float]:
         # Altura en reposo ≈ 0.6 - 0.04 (mitad torso) - F_HIP_LEN - F_KNEE_LEN - F_ANKLE_LEN
         # ≈ 0.6 - 0.04 - 0.121 - 0.111 - 0.1534 ≈ 0.174 m hasta el suelo
-        # Rango saludable: no caer por debajo de 0.17 m ni superar 0.8 m
-        return (0.17, 0.9)
+        # Rango saludable: no caer por debajo de 0.35 m ni superar 0.7 m
+        return (0.35, 0.7)
 
     @info_property
     def foot_geom_names(self) -> List[str]:
