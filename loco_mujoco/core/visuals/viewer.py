@@ -403,7 +403,7 @@ class MujocoViewer:
                                     carry.user_scene.geoms.mat[j],
                                     carry.user_scene.geoms.rgba[j])
                 # set dataid to be able to identify the geom in the user scene
-                self._scene.geoms[carry_visual_start_idx + j].dataid = int(carry.user_scene.geoms.dataid[j]*2)
+                self._scene.geoms[carry_visual_start_idx + j].dataid = int(np.ravel(carry.user_scene.geoms.dataid[j])[0] * 2)
                 self._scene.geoms[carry_visual_start_idx + j].category =  mujoco.mjtCatBit.mjCAT_DECOR
 
                 self._scene.ngeom += 1
